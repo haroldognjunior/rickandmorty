@@ -1,45 +1,22 @@
+import React from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './App.css';
-import { useQuery } from "@apollo/client";
-import {INFO_PERSON} from "./queries/index";
+import Character  from "./components/character";
+import Home from "./Home";
 
 function App() {
-  const { loading, error, data } = useQuery(INFO_PERSON);
-  
-console.log(data, "es dataaaa")
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>an error occurred...</p>;
-  }
 
   return (
-    <section className="parent">
-      {data.characters.results.map((person, index) => (
-        <div className="card" key={person.name}>
-          <img src={person.image} alt="Avatar" style={{ width: "100%" }} />
-          <div className="container">
-            <h4>
-              <b>{person.name}</b>
-            </h4>
-            <p>
-              <b>GENDER:</b> {person.gender}
-            </p>
-            <p>
-              <b>SPECIE:</b> {person.species}
-            </p>
-            <p>
-              <b>Last known location:</b> {person.location.name}
-            </p>
-            <p>
-              <b>First seen in:</b> {person.episode[0].name}
-            </p>
-          </div>
-        </div>
-      ))}
-    </section>
+    <BrowserRouter>    
+      <div> 
+        <Switch>
+          <Route exact path="/" render={() => <Home  path="/" />} />
+          <Route path="/character/:id" render={(props) => <Character {...props} />} />
+        </Switch>  
+      </div>
+    </BrowserRouter>
   );
 }
+
 
 export default App;
